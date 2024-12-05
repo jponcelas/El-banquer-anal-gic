@@ -15,7 +15,13 @@ public class banquer
 
     public void CrearClient(string nomClient)
     {
-        clients.Add(nomClient, new Client(nomClient));    
+        if (clients.ContainsKey(nomClient))
+        {
+            Console.WriteLine("El client " + nomClient +  " ja existeix.");
+            return;
+        }
+        clients.Add(nomClient, new Client(nomClient));
+        Console.WriteLine("Client " + nomClient  + " creat amb èxit.");
     }
     
     
@@ -25,10 +31,10 @@ public class banquer
         {
             var client = clients[nomClient];
             client.saldo += quantitat;
-            return nomClient  + " ha ingresat " + quantitat + "€";
+            return nomClient + " ha ingresat " + quantitat + "€.";
         }
         
-        return "Tu no et client " + nomClient;
+        return "El client "  + nomClient + " no existeix.";
     }
 
     public string TreureDiners(string nomClient,int quantitat)
@@ -39,13 +45,23 @@ public class banquer
             var comissio = (int)quantitat / 100;
             if (quantitat > client.saldo)
             {
-                return nomClient + ": No tens prous diners";
+                return nomClient + ": No tens prous diners.";
             }
             client.saldo -= quantitat - comissio;
-            return nomClient + ": Tens " + quantitat + "€"  + ", et queda " + client.saldo;
+            return nomClient + ": Has retirat" + quantitat + "€. Et queda" + client.saldo + "€.";
         }
-        return "Tu no et client " + nomClient;
+        return "El client" + nomClient + " no existeix.";
         
+    }
+    public string ConsultarSaldo(string nomClient)
+    {
+        if (clients.ContainsKey(nomClient))
+        {
+            var client = clients[nomClient];
+            return nomClient + " té un saldo de " + client.saldo + "€.";
+        }
+
+        return "El client" + nomClient + "no existeix.";
     }
     
 }
